@@ -1,31 +1,19 @@
 var express = require('express');
 var app = express();
-var cool = require('cool-ascii-faces');
-var pg = require('pg');
+var port = 3700;
 
-app.set('port', (process.env.PORT || 5000));
-
-
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.send(result.rows); }
-    });
-  });
-})
-
-app.get('/', function (request, response) {
-    var result = ''
-    var times = process.env.TIMES || 5
-    for (i=0; i < times; i++)
-        result += cool();
-  response.send(result);
+app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/templates');
+app.set('view engine', 'ejs');
+app.get("/", function (req, res) {
+    res.render("page");
 });
 
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
+var io = require('socket.io').listen(app.listen(port));
+
+io.sockets.on('connection', function (socket) {
+    socket.emit('message', { message: 'Chubbins Chat Co. welcomes you!' });
+    socket.on('send', function (data) {
+        io.sockets.emit('message', data);
+    });
 });
