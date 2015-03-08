@@ -2,10 +2,11 @@
     $(document).ready(function () {
 
         var messages = [];
-        var socket = io.connect('http://localhost:3700');
-        var field = document.getElementById("field");
-        var sendButton = document.getElementById("send");
-        var content = document.getElementById("content");
+        var socket_url = window.location.protocol + '//' + document.domain + ':' + location.port;
+        var socket = io.connect(socket_url);
+        var field = $("#field")[0];
+        var sendButton = $("#send")[0];
+        var content = $("#content")[0];
 
         socket.on('message', function (data) {
             if(data.message) {
