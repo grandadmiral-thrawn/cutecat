@@ -1,4 +1,4 @@
-# Chubbins Chat Co
+# ChubbyChat
 
 Chubby chat for chubby people!
 
