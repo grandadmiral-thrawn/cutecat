@@ -29,6 +29,11 @@
             });
             this.reset();
         });
+        $("#pick-left").click(function (event) {
+            event.preventDefault();
+            console.log("You picked left!");
+            var data = {side:'left'}
+        });
     }
 
     $(document).ready(function () {
@@ -36,9 +41,10 @@
         
         socket_url = window.location.protocol + '//' + document.domain + ':' + location.port;
         socket = io.connect(socket_url);
-
-        socket_listeners(socket);
-        socket_emitters(socket);
+        socket.on("connect", function(){
+            socket_listeners(socket);
+            socket_emitters(socket);  
+        });
     });
 
 })(jQuery);

@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChubbyChat</title>
+    <title>CuteCat</title>
     <link rel="stylesheet" type="text/css" href="/css/foundation.css" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Sunshiney|Poiret+One|Open+Sans" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Sunshiney|Poiret+One|Open+Sans|Indie+Flower" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script src="/js/vendor/modernizr.js"></script>
   </head>
@@ -14,7 +14,7 @@
     <nav class="top-bar" data-topbar>
       <ul class="title-area">
         <li class="name">
-          <h1><a href="/"><span class="title">Chubby Chat</span></a></h1>
+          <h1><a href="/"><div class="title">Cute Cat</div></a></h1>
         </li>
         <li class="toggle-topbar menu-icon">
           <a href="#"><span>Menu</span></a>
@@ -25,17 +25,30 @@
         <ul class="right"><li class="divider"></li></ul>
         <ul class="right">
           <li class="divider"></li>
-          <li><a href="#">Register</a></li>
+          <li><a href="#">Back</a></li>
           <li class="divider"></li>
-          <li><a href="#">Login</a></li>
+          <li><a href="#">Next</a></li>
         </ul>
       </section>
     </nav>
-    <div class="vertical-spacer-25"></div>
+    <div class="vertical-spacer-10"></div>
     <div class="row">
       <div class="large-12 columns">
         <div class="row">
-          <!-- BEGIN CHAT ROOM CODE -->
+          <h1 class="indieflower centered">Which cat is cuter?</h1>
+        </div>
+        <div class="row">
+          <div class="large-6 columns centered">
+            <a href="#" id="pick-left">
+            <img src="/images/cat001.jpg" alt="cat001" class="cat-pic"/>
+            </a>
+          </div>
+          <div class="large-6 columns end centered">
+            <a href="#" id="pick-right">
+            <img src="/images/cat002.jpg" alt="cat002" class="cat-pic"/>
+            </a>
+          </div>
+          <!-- BEGIN CHAT ROOM CODE 
           <div id="content" class="chatbox"></div>
           <form id="chat-form" method="POST" action="#">
             <div class="row controls">
@@ -45,7 +58,7 @@
               </div>
             </div>
           </form>
-          <!-- END CHAT ROOM CODE -->
+          END CHAT ROOM CODE -->
         </div>    
       </div>
     </div>

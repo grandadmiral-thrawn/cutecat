@@ -1,4 +1,4 @@
-# ChubbyChat
+# CuteCat
 
 Chubby chat for chubby people!
 
