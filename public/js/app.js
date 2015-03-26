@@ -3,6 +3,21 @@
  */
 
 (function ($) {
+    
+    // Create modal alert windows (using Foundation reveal)<-- creates a light box that drops down
+    function modal_alert(bodytext, bodytag, headertext) {
+        var modal_body;
+        if (headertext) {
+            $('#modal-header').empty().text(headertext);
+        }
+        if (bodytext) {
+            modal_body = (bodytag) ? $('<' + bodytag + ' />') : $('<p />');
+            $('#modal-body').empty().append(
+                modal_body.text(bodytext)
+            );
+        }
+        $('#modal-dynamic').foundation('reveal', 'open');
+    }
 
     // Receive messages through websocket from server
     function socket_listeners(socket) {
@@ -31,8 +46,15 @@
         });
         $("#pick-left").click(function (event) {
             event.preventDefault();
-            console.log("You picked left!");
-            var data = {side:'left'}
+            var data = {side:'left'};
+            var prompt = "...just like everyone else!";
+            modal_alert(prompt, "h4", "You picked cat 1!");
+        });
+        $("#pick-right").click(function (event) {
+            event.preventDefault();
+            var data = {side:'right'};
+            var prompt = "...like a boss!";
+            modal_alert(prompt, "h4", "You picked cat 2!");
         });
     }
 

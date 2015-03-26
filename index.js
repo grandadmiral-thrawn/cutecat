@@ -26,7 +26,7 @@ app.get('/db', function (req, res) {
             res.send(result.rows);
         });
     });
-})
+});
 
 // Websocket listeners
 
