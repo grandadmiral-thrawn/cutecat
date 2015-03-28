@@ -21,16 +21,26 @@
 
     // Receive messages through websocket from server
     function socket_listeners(socket) {
-        var messages, markup;
-        messages = [];
-        socket.on('message', function (data) {
-            if (data && data.message) {
-                messages.push(data.message);
-                markup = '';
-                for (var i = 0, len = messages.length; i < len; ++i) {
-                    markup += messages[i] + '<br />';
+        socket.on('new-cats', function (data) {
+            if (data && data.left){
+                var imagepath = '/images/';
+                $('#pick-left img').attr('src', imagepath+data.left);
+                $('#pick-right img').attr('src', imagepath+data.right);
+            }
+        });
+        socket.on('picked-count', function (data) {
+            var tagline, modaltext;
+            if (data && data.times_picked) {
+                if (data.side==='left') {
+                    modaltext = "You picked cat 1!";
+                    
+                } else {
+                    modaltext = "You picked cat 2!";
+                    
                 }
-                $('#content').html(markup);
+                tagline = "Just like " + data.times_picked+ " other people";
+                /* displays in the drop down lightbox as header text (modal alert)*/
+                modal_alert(tagline, "h4", modaltext);
             }
         });
     }
@@ -46,21 +56,27 @@
         });
         $("#pick-left").click(function (event) {
             event.preventDefault();
-            var data = {side:'left'};
-            var prompt = "...just like everyone else!";
-            modal_alert(prompt, "h4", "You picked cat 1!");
+            /* function for getting which cat was picked and the file-name*/
+            var data = {
+                side:'left',
+                filename: $('#pick-left img').attr('src')};
+            socket.emit('picked', data);
+            /* displays in the drop down lightbox as body text (modal alert)*/    
+            
         });
         $("#pick-right").click(function (event) {
             event.preventDefault();
-            var data = {side:'right'};
-            var prompt = "...like a boss!";
-            modal_alert(prompt, "h4", "You picked cat 2!");
+            var data = {
+                side:'right',
+                filename: $('#pick-right img').attr('src')};
+            socket.emit('picked', data);
         });
     }
 
+    /* doc ready is like the main function */
     $(document).ready(function () {
         var socket_url, socket;
-        
+        /* socket_listeners and socket_emitters come online to set up an environment where we can have call backs */
         socket_url = window.location.protocol + '//' + document.domain + ':' + location.port;
         socket = io.connect(socket_url);
         socket.on("connect", function(){
