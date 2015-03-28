@@ -31,35 +31,14 @@ app.get('/db', function (req, res) {
 // Websocket listeners
 
 io.sockets.on('connection', function (socket) {
+    
     var num_cats; 
+    
     function random_cat(){
         return Math.ceil(Math.random()*num_cats);
     }
-    pg.connect(database_url, function(err,client,done) {
-        var sql = "SELECT count(*) from cats";
-        client.query(sql, function(err, result){
-            done();
-            if(err) console.error(err);
-            num_cats = parseInt(result.rows[0].count);
-            console.log(num_cats);
-        });
-    });
-    socket.on('picked', function(data){
-        var filename_split = data.filename.split('/');
-        var filename = filename_split[filename_split.length-1];
-        
-        pg.connect(database_url, function(err, client, done) {
-            var sql = "UPDATE cats SET times_picked = times_picked + 1 WHERE filename=$1 RETURNING times_picked";
-            client.query(sql, [filename], function(err, result){
-                done(); 
-                if(err) console.error(err);
-                var picked = {
-                    times_picked:result.rows[0].times_picked,
-                    side:data.side
-                };
-                io.sockets.emit('picked-count', picked);
-            });
-        });
+    
+    function update_cats(){
         pg.connect(database_url, function(err, client, done) {
             /* randomly choose 2 cats from all the cats based on num of cats*/
             var newcats = [random_cat(), random_cat()];
@@ -76,7 +55,38 @@ io.sockets.on('connection', function (socket) {
                 };
 
                 io.sockets.emit('new-cats', cats);
-            })
-        })
+            });
+        });
+
+    }
+    
+    pg.connect(database_url, function(err,client,done) {
+        var sql = "SELECT count(*) from cats";
+        client.query(sql, function(err, result){
+            done();
+            if(err) console.error(err);
+            num_cats = parseInt(result.rows[0].count);
+            console.log(num_cats);
+        });
+    });
+    
+    socket.on('picked', function(data){
+        var filename_split = data.filename.split('/');
+        var filename = filename_split[filename_split.length-1];
+        
+        pg.connect(database_url, function(err, client, done) {
+            var sql = "UPDATE cats SET times_picked = times_picked + 1 WHERE filename=$1 RETURNING times_picked";
+            client.query(sql, [filename], function(err, result){
+                done(); 
+                if(err) console.error(err);
+                var picked = {
+                    times_picked:result.rows[0].times_picked,
+                    side:data.side
+                };
+                io.sockets.emit('picked-count', picked);
+            });
+        });
+
+        update_cats();
     });
 });
