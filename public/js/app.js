@@ -4,13 +4,15 @@
 
 (function ($) {
     
-    // Create modal alert windows (using Foundation reveal)<-- creates a light box that drops down
+    // Create modal alert windows (using Foundation reveal)<-- creates a light box that drops down - arguement is a jquery pull
     function modal_alert(bodytext, bodytag, headertext) {
         var modal_body;
         if (headertext) {
+            // if header text exists then send the header
             $('#modal-header').empty().text(headertext);
         }
         if (bodytext) {
+            // if body text exists then send the body
             modal_body = (bodytag) ? $('<' + bodytag + ' />') : $('<p />');
             $('#modal-body').empty().append(
                 modal_body.text(bodytext)
@@ -21,6 +23,7 @@
 
     // Receive messages through websocket from server
     function socket_listeners(socket) {
+        // if the socket has data on hte left, 
         socket.on('new-cats', function (data) {
             if (data && data.left){
                 var imagepath = '/images/';
@@ -47,13 +50,6 @@
 
     // Send messages through websocket to server
     function socket_emitters(socket) {
-        $('#chat-form').submit(function (event) {
-            event.preventDefault();
-            socket.emit('send', {
-                message: $('#field').val()
-            });
-            this.reset();
-        });
         $("#pick-left").click(function (event) {
             event.preventDefault();
             /* function for getting which cat was picked and the file-name*/
